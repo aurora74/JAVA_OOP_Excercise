@@ -1,25 +1,45 @@
-import static java.lang.Math.sqrt;
+import java.util.Scanner;
 
-// Import your library
-// Do not change the name of the Solution class
 public class Solution {
-    // Type your main code here
+
 
     /**
-     * Checks if a given number is a prime number.
+     * Calculates the Fibonacci number at the specified index.
      *
-     * @param n The number to check if it is prime.
-     * @return true if n is a prime number, false otherwise.
+     * @param n The index of the Fibonacci number to calculate.
+     * @return The Fibonacci number at the specified index.
      */
-    public boolean isPrime(int n) {
-        if (n < 2) {
-            return false;
-        }
-        for (int i = 2; i <= sqrt(n); i++) {
-            if (n % i == 0) {
-                return false;
+    public static long fibonacci(long n) {
+        if (n < 0) {
+            return -1;
+        } else if (n == 0 || n == 1) {
+            return n;
+        } else {
+            long[] fibonacci = new long[(int) (n + 1)];
+            fibonacci[0] = 0;
+            fibonacci[1] = 1;
+
+            for (int i = 2; i <= n; i++) {
+                fibonacci[i] = fibonacci[i - 1] + fibonacci[i - 2];
+                if (fibonacci[i] <0) {
+                    return Long.MAX_VALUE;
+                }
             }
+
+            return fibonacci[(int) n];
         }
-        return true;
     }
+
+    /**
+     * This is the main method of the program. The result is then printed to the console.
+     */
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        long n = sc.nextLong();
+
+        long fibonacci = Solution.fibonacci(n);
+        System.out.println(fibonacci);
+    }
+
 }
