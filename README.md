@@ -1,2 +1,2 @@
-# JAVA_OOP_Excercise
+# Java_OOP_Excercise
  
