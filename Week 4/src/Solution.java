@@ -1,45 +1,149 @@
-import java.util.Scanner;
+import static java.lang.Math.abs;
 
 public class Solution {
+    private int numerator;
+    private int denominator = 1;
 
+    public void setNumerator(int numerator) {
+        this.numerator = numerator;
+    }
 
     /**
-     * Calculates the Fibonacci number at the specified index.
+     * Sets the denominator of the fraction.
      *
-     * @param n The index of the Fibonacci number to calculate.
-     * @return The Fibonacci number at the specified index.
+     * @param denominator The new denominator of the fraction.
      */
-    public static long fibonacci(long n) {
-        if (n < 0) {
-            return -1;
-        } else if (n == 0 || n == 1) {
-            return n;
-        } else {
-            long[] fibonacci = new long[(int) (n + 1)];
-            fibonacci[0] = 0;
-            fibonacci[1] = 1;
+    public void setDenominator(int denominator) {
+        if (denominator == 0) {
+            this.denominator = 1;
+            return;
+        }
+        this.denominator = denominator;
+    }
 
-            for (int i = 2; i <= n; i++) {
-                fibonacci[i] = fibonacci[i - 1] + fibonacci[i - 2];
-                if (fibonacci[i] <0) {
-                    return Long.MAX_VALUE;
-                }
-            }
+    public int getNumerator() {
+        return this.numerator;
+    }
 
-            return fibonacci[(int) n];
+    public int getDenominator() {
+        return this.denominator;
+    }
+
+    Solution(int numerator, int denominator) {
+        this.numerator = numerator;
+        this.denominator = denominator;
+        if (denominator == 0) {
+            this.denominator = 1;
         }
     }
 
     /**
-     * This is the main method of the program. The result is then printed to the console.
+     * Find GCD.
+     *
+     * @return GCD of two numbers.
      */
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    private int gcd(int a, int b) {
+        if (b == 0) {
+            return a;
+        } else {
+            return abs(gcd(b, a % b));
+        }
+    }
 
-        long n = sc.nextLong();
+    /**
+     * Reduces the fraction to its lowest terms.
+     *
+     * @return The reduced fraction.
+     */
+    public Solution reduce() {
+        int ucln = gcd(numerator, denominator);
 
-        long fibonacci = Solution.fibonacci(n);
-        System.out.println(fibonacci);
+        numerator = numerator / ucln;
+        denominator = denominator / ucln;
+
+        return this;
+    }
+
+    /**
+     * Adds two fractions.
+     *
+     * @param other The other fraction to add.
+     * @return The sum of the two fractions.
+     */
+    public Solution add(Solution other) {
+        if (other.denominator == 0) {
+            return this;
+        }
+
+        this.numerator = this.numerator * other.denominator + other.numerator * this.denominator;
+        this.denominator = this.denominator * other.denominator;
+
+        return this.reduce();
+    }
+
+    /**
+     * Subtracts two fractions.
+     *
+     * @param other The other fraction to subtract.
+     * @return The difference of the two fractions.
+     */
+    public Solution subtract(Solution other) {
+        if (other.denominator == 0) {
+            return this;
+        }
+
+        this.numerator = this.numerator * other.denominator - other.numerator * this.denominator;
+        this.denominator = this.denominator * other.denominator;
+
+        return this.reduce();
+    }
+
+    /**
+     * Multiplies two fractions.
+     *
+     * @param other The other fraction to multiply.
+     * @return The product of the two fractions.
+     */
+    public Solution multiply(Solution other) {
+        if (other.denominator == 0) {
+            return this;
+        }
+
+        this.numerator = this.numerator * other.numerator;
+        this.denominator = this.denominator * other.denominator;
+
+        return this.reduce();
+    }
+
+    /**
+     * Divides two fractions.
+     *
+     * @param other The other fraction to divide by.
+     * @return The quotient of the two fractions.
+     */
+    public Solution divide(Solution other) {
+        if (other.numerator == 0 || other.denominator == 0) {
+            return this;
+        }
+
+        this.numerator = this.numerator * other.denominator;
+        this.denominator = this.denominator * other.numerator;
+
+        return this.reduce();
+    }
+
+    /**
+     * Check equals .
+     *
+     * @param obj The Object.
+     * @return result equals or not.
+     */
+    public boolean equals(Object obj) {
+        if (obj instanceof Solution) {
+            Solution other = (Solution) obj;
+            return this.numerator * other.denominator == this.denominator * other.numerator;
+        }
+        return false;
     }
 
 }
