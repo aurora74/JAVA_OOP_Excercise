@@ -146,4 +146,19 @@ public class Solution {
         return false;
     }
 
+    public static void main (String[] args) {
+        Solution fraction = new Solution(2, 4);
+        Solution other = new Solution(1, 1);
+        Solution other2 = new Solution(0, 2);
+
+        fraction.add(other);
+        System.out.println(fraction.numerator);
+        System.out.println(fraction.denominator);
+
+        fraction.divide(other2);
+
+        System.out.println(fraction.numerator);
+        System.out.println(fraction.denominator);
+    }
+
 }
